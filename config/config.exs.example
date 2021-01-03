@@ -6,4 +6,18 @@ config :hydrogen,
   api_endpoint: "https://discord.com/api/v6",
   scope: ["identify", "email", "guilds"],
   discord_redirect_url: "hydrogen url.something/redirect",
-  final_redirect: "your website"
+  final_redirect: "your website",
+  port: 8080,
+  scheme: :http # Use ":https" if you're going to use HTTPS.
+
+
+# Uncomment these if you're going to use Hydrogen with HTTPS support.
+# For more information, refer to plug's documentation.
+# https://hexdocs.pm/plug/https.html
+
+# Plug.Cowboy.https Hydrogen.Router, [],
+#   port: 443,
+#   cipher_suite: :strong,
+#   certfile: "/etc/letsencrypt/live/example.net/cert.pem",
+#   keyfile: "/etc/letsencrypt/live/example.net/privkey.pem",
+#   cacertfile: "/etc/letsencrypt/live/example.net/chain.pem"

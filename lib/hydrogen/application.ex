@@ -7,7 +7,7 @@ defmodule Hydrogen.Application do
     children = [
       con_cache_child_spec(:user_cache, 1, 5),
       con_cache_child_spec(:guild_cache, 2, 10),
-      {Plug.Cowboy, scheme: :http, plug: Hydrogen.Router, options: [port: 8080]}
+      {Plug.Cowboy, scheme: Application.fetch_env!(:hydrogen, :scheme), plug: Hydrogen.Router, options: [port: Application.fetch_env!(:hydrogen, :port)]}
     ]
     
     Logger.info "Hydrogen is R2G."
