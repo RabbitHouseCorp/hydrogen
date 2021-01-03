@@ -19,7 +19,7 @@ defmodule Hydrogen.Discord do
     case Hydrogen.Util.post(Hydrogen.Util.generate_endpoint("/oauth2/token"), URI.encode_query(body), [{"Content-Type", "application/x-www-form-urlencoded"}]) do
       nil -> nil
       body ->
-        %{"access_token" => ac} = body
+        %{"access_token" => ac} = Jason.decode!(body)
         %{access_token: ac}
     end
   end
@@ -40,9 +40,30 @@ defmodule Hydrogen.Discord do
         case Hydrogen.Util.get(Application.fetch_env!(:hydrogen, :api_endpoint) <> "/users/@me", [{"Authorization", "Bearer " <> ac}]) do
           nil -> nil # nao tem refresh culpe a daniela gc
           d ->
-            json = Jason.encode!(d)
-            ConCache.put(:user_cache, token, json)
-            json
+            ConCache.put(:user_cache, token, d)
+            d
+        end
+    end
+  end
+
+  def get_user_guilds(token) do
+    case ConCache.get(:guild_cache, token) do
+      nil -> get_fresh_user_guilds(token)
+      a ->
+        ConCache.touch(:guild_cache, token) # Refresh TTL
+        a
+    end
+  end
+
+  def get_fresh_user_guilds(token) do
+    case Hydrogen.JWT.decode(token) do
+      nil -> nil
+      %{:access_token => ac} ->
+        case Hydrogen.Util.get(Application.fetch_env!(:hydrogen, :api_endpoint) <> "/users/@me/guilds", [{"Authorization", "Bearer " <> ac}]) do
+          nil -> nil
+          d ->
+            ConCache.put(:guild_cache, token, d)
+            d
         end
     end
   end

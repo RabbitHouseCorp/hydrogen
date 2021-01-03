@@ -5,17 +5,15 @@ defmodule Hydrogen.Util do
 
   def post(url, a, b) do
     case HTTPoison.post(url, a, b) do
-      {:ok, %HTTPoison.Response{status_code: 200, body: body}} -> Jason.decode!(body)
-      z -> IO.inspect(z)
-      nil
+      {:ok, %HTTPoison.Response{status_code: 200, body: body}} -> body
+      _ -> nil
     end
   end
 
   def get(url, a) do
     case HTTPoison.get(url, a) do
-      {:ok, %HTTPoison.Response{status_code: 200, body: body}} -> Jason.decode!(body)
-      z -> IO.inspect(z)
-      nil
+      {:ok, %HTTPoison.Response{status_code: 200, body: body}} -> body
+      _ -> nil
     end
   end
 end

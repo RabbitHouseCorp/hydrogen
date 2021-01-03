@@ -5,12 +5,27 @@ defmodule Hydrogen.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      {ConCache, [name: :user_cache, ttl_check_interval: :timer.seconds(1), global_ttl: :timer.seconds(5)]},
+      con_cache_child_spec(:user_cache, 1, 5),
+      con_cache_child_spec(:guild_cache, 2, 10),
       {Plug.Cowboy, scheme: :http, plug: Hydrogen.Router, options: [port: 8080]}
     ]
     
     Logger.info "Hydrogen is R2G."
     opts = [strategy: :one_for_one, name: Hydrogen.Supervisor]
     Supervisor.start_link(children, opts)
+  end
+
+  defp con_cache_child_spec(name, interval_ttl, global_ttl) do
+    Supervisor.child_spec(
+      {
+        ConCache,
+        [
+          name: name,
+          ttl_check_interval: :timer.seconds(interval_ttl),
+          global_ttl: :timer.seconds(global_ttl)
+        ]
+      },
+      id: {ConCache, name}
+    )
   end
 end

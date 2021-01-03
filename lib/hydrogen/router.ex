@@ -51,6 +51,16 @@ defmodule Hydrogen.Router do
     end
   end
 
+  get "/user/guilds" do
+    token = Plug.Conn.get_req_header(conn, "authorization")
+    data = Hydrogen.Discord.get_user_guilds(List.first(token))
+    if data == nil do
+      send_resp(conn, 400, "{\"error\": 1}")
+    else
+      send_resp(conn, 200, data)
+    end
+  end
+
   get "/info" do
     conn
     |> put_resp_content_type("application/json")
