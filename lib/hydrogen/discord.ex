@@ -19,8 +19,8 @@ defmodule Hydrogen.Discord do
     case Hydrogen.Util.post(Hydrogen.Util.generate_endpoint("/oauth2/token"), URI.encode_query(body), [{"Content-Type", "application/x-www-form-urlencoded"}]) do
       nil -> nil
       body ->
-        %{"access_token" => ac, "refresh_token" => rc} = body
-        %{access_token: ac, refresh_token: rc}
+        %{"access_token" => ac} = body
+        %{access_token: ac}
     end
   end
 
@@ -36,7 +36,7 @@ defmodule Hydrogen.Discord do
   def get_fresh_user_data(token) do
     case Hydrogen.JWT.decode(token) do
       nil -> nil
-      %{:access_token => ac, :refresh_token => _rc} ->
+      %{:access_token => ac} ->
         case Hydrogen.Util.get(Application.fetch_env!(:hydrogen, :api_endpoint) <> "/users/@me", [{"Authorization", "Bearer " <> ac}]) do
           nil -> nil # nao tem refresh culpe a daniela gc
           d ->
