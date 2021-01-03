@@ -6,31 +6,39 @@ defmodule Hydrogen.Router do
   plug :dispatch
 
   get "/authorize" do
-    url = Util.generate_endpoint("/oauth2/authorize?")
-    query = Map.merge(Hydrogen.Discord.get_authorization_body(), %{
-      response_type: "code"
-    })
+    conn = conn |> Plug.Conn.fetch_query_params()
     
+    url = Util.generate_endpoint("/oauth2/authorize?")
+    query = case Map.get(conn.params, "state") do
+      nil -> %{response_type: "code"}
+      w -> %{response_type: "code", state: w}
+    end
+
     conn
     |> Plug.Conn.resp(:found, "")
-    |> Plug.Conn.put_resp_header("location", url <> URI.encode_query(query))
+    |> Plug.Conn.put_resp_header("location", url <> URI.encode_query(Map.merge(Hydrogen.Discord.get_authorization_body(), query)))
   end
 
   get "/version" do
-    send_resp(conn, 200, "hydrogen oauth (plug/cowboy; elixir)")
+    send_resp(conn, 200, "hydrogen v1 (plug/cowboy; elixir)")
   end
 
   get "/redirect" do
-    token = conn
+    conn = conn
     |> Plug.Conn.fetch_query_params()
-    |> Hydrogen.Discord.get_tokens_from_conn()
+    
+    token = Hydrogen.Discord.get_tokens_from_conn(conn)
     |> Hydrogen.JWT.encode()
-    
-    Hydrogen.Discord.get_user_data(token) # lets add the user to the cache.
-    
+
+    query = case Map.get(conn.params, "state") do
+      nil -> %{token: token}
+      w -> %{token: token, state: w}
+    end
+
+    Hydrogen.Discord.get_user_data(token) # let's add the user to the cache.
     conn
     |> Plug.Conn.resp(:found, "")
-    |> Plug.Conn.put_resp_header("location", Application.fetch_env!(:hydrogen, :final_redirect) <> "?token=" <> token)
+    |> Plug.Conn.put_resp_header("location", Application.fetch_env!(:hydrogen, :final_redirect) <> "?" <> URI.encode_query(query))
   end
 
   get "/user" do
