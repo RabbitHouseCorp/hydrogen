@@ -26,7 +26,8 @@ defmodule Hydrogen.MixProject do
       {:json_web_token, "~> 0.2"},
       {:jason, "~> 1.1"},
       {:con_cache, "~> 0.13"},
-      {:httpoison, "~> 1.7"}
+      {:httpoison, "~> 1.7"},
+      {:corsica, "~> 1.1"}
     ]
   end
 end
