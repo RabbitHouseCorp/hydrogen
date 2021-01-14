@@ -3,7 +3,7 @@ defmodule Hydrogen.Router do
   alias Hydrogen.Util
   
   plug :match
-  plug Corsica, origins: [Application.fetch_env!(:hydrogen, :final_redirect), Application.fetch_env!(:hydrogen, :discord_redirect_url)]
+  plug Corsica, origins: "*"
   plug :dispatch
   
   get "/authorize" do
