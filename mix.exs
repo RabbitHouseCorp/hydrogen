@@ -27,7 +27,7 @@ defmodule Hydrogen.MixProject do
       {:jason, "~> 1.1"},
       {:con_cache, "~> 0.13"},
       {:httpoison, "~> 1.7"},
-      {:corsica, "~> 1.1"}
+      {:cors_plug, "~> 2.0"}
     ]
   end
 end

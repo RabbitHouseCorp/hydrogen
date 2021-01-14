@@ -3,7 +3,7 @@ defmodule Hydrogen.Router do
   alias Hydrogen.Util
   
   plug :match
-  plug Corsica, origins: "*"
+  plug CORSPlug
   plug :dispatch
   
   get "/authorize" do
