@@ -16,7 +16,9 @@ config :hydrogen,
   port: 8080,
   scheme: :http, # Use ":https" if you're going to use HTTPS.
   mongo_url: "", # Self explanatory (NO DNS SEEDING (mongodb+srv://) SUPPORT! BLAME kobil-systems/mongodb)
-  db_pool_size: 1 # How many db connections will be used.
+  db_pool_size: 1, # How many db connections will be used.
+  edit_bucket_ms: 10_000, # Edit hammer bucket TTL
+  edit_bucket_amount: 5 # Edit hammer bucket amount. This means that you can do 5 requests every edit_bucket_ms (10s) before you get ratelimited.
 
 import_config "modules.exs" # Let's load dashboard modules from the modules.exs config
 
