@@ -14,7 +14,7 @@ defmodule Hydrogen.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:con_cache, :logger],
+      extra_applications: [:con_cache, :mnesia, :logger],
       mod: {Hydrogen.Application, []}
     ]
   end
@@ -27,7 +27,11 @@ defmodule Hydrogen.MixProject do
       {:jason, "~> 1.1"},
       {:con_cache, "~> 0.13"},
       {:httpoison, "~> 1.7"},
-      {:cors_plug, "~> 2.0"}
+      {:cors_plug, "~> 2.0"},
+      {:hammer_backend_mnesia, "~> 0.5"},
+      {:hammer, "~> 6.0"},
+      {:observer_cli, "~> 1.6"},
+      {:mongodb, github: "gergo-papp/mongodb", branch: "patch-1"}
     ]
   end
 end

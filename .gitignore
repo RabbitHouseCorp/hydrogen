@@ -22,9 +22,11 @@ erl_crash.dump
 # Ignore package tarball (built via "mix hex.build").
 hydrogen-*.tar
 
-
 # Temporary files for e.g. tests
 /tmp
 
 # Configuration file with sensitive data
 /config/config.exs
+
+# MnesiaDB data (for Hammer)
+/Mnesia.*@*

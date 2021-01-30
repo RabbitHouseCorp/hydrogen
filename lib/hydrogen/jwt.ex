@@ -7,7 +7,7 @@ defmodule Hydrogen.JWT do
   end
 
   def encode(map) do
-     JsonWebToken.sign(map, get_key())
+    JsonWebToken.sign(map, get_key())
   end
 
   def decode(jwt) do

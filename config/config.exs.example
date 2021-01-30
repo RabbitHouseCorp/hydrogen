@@ -1,5 +1,11 @@
 use Mix.Config
 
+config :hammer,
+  backend: {
+    Hammer.Backend.Mnesia,
+    [expiry_ms: 60_000 * 60 * 2, cleanup_interval_ms: 60_000 * 10]
+  }
+
 config :hydrogen,
   client_id: "client id",
   client_secret: "client secret",
@@ -8,8 +14,11 @@ config :hydrogen,
   discord_redirect_url: "hydrogen url.something/redirect",
   final_redirect: "your website",
   port: 8080,
-  scheme: :http # Use ":https" if you're going to use HTTPS.
+  scheme: :http, # Use ":https" if you're going to use HTTPS.
+  mongo_url: "", # Self explanatory (NO DNS SEEDING (mongodb+srv://) SUPPORT! BLAME kobil-systems/mongodb)
+  db_pool_size: 1 # How many db connections will be used.
 
+import_config "modules.exs" # Let's load dashboard modules from the modules.exs config
 
 # Uncomment these if you're going to use Hydrogen with HTTPS support.
 # For more information, refer to plug's documentation.
