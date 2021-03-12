@@ -200,11 +200,6 @@ defmodule Hydrogen.Router do
     |> send_resp(200, @modules_json)
   end
 
-  get "/queen" do
-    conn
-    |> send_resp(200, "NICKI MINAJ IS THE QUEEN OF RAP")
-  end
-
   match _ do
     send_resp(conn, 404, "resource not found :( anwyays stream fiona apple")
   end
