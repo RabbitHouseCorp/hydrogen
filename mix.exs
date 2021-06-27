@@ -23,7 +23,7 @@ defmodule Hydrogen.MixProject do
   defp deps do
     [
       {:plug_cowboy, "~> 2.0"},
-      {:json_web_token, "~> 0.2"},
+      {:joken, "~> 2.3"},
       {:jason, "~> 1.1"},
       {:con_cache, "~> 0.13"},
       {:httpoison, "~> 1.7"},

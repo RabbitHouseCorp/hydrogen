@@ -23,7 +23,7 @@ defmodule Hydrogen.Router do
     conn
     |> Plug.Conn.resp(
       :found,
-      "bitch it's king kong? yes i'm king kong; this is king kong? yes miss king kong"
+      "Redirecting you to Discord"
     )
     |> Plug.Conn.put_resp_header(
       "location",
@@ -48,7 +48,7 @@ defmodule Hydrogen.Router do
         w -> %{token: token, state: w}
       end
 
-    # let's add the user to the cache.
+    # populate the cache
     spawn(fn -> Hydrogen.Discord.get_user_data(token) end)
 
     conn

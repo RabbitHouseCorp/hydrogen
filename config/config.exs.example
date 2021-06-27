@@ -1,5 +1,7 @@
 use Mix.Config
 
+config :joken, default_signer: "JWT SECRET HERE!!!"
+
 config :hammer,
   backend: {
     Hammer.Backend.Mnesia,

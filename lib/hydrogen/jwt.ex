@@ -1,17 +1,16 @@
+defmodule Hydrogen.JWT.Token do
+  use Joken.Config
+end
+
 defmodule Hydrogen.JWT do
-  defp get_key do
-    case System.fetch_env("JWT_KEY") do
-      {:ok, k} -> %{key: k}
-      :error -> %{key: "Ksisb827#9*!#8272UshsjsuhakBwknk"}
-    end
-  end
+  alias Hydrogen.JWT.Token
 
   def encode(map) do
-    JsonWebToken.sign(map, get_key())
+    Token.generate_and_sign!(map)
   end
 
   def decode(jwt) do
-    case JsonWebToken.verify(jwt, get_key()) do
+    case Token.verify_and_validate(jwt) do
       {:ok, claims} -> claims
       {:error, _} -> nil
     end
